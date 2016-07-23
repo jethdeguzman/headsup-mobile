@@ -41,16 +41,22 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
+.controller('AlertsCtrl', function($scope) {
+  $scope.alerts = [];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('AlertCtrl', function($scope, $stateParams) {
+})
+
+.controller('CreateAlertCtrl', function($scope, $stateParams) {
+  $scope.category_id = $stateParams.category_id;
+})
+
+.controller('CategoriesCtrl', function($scope) {
+  $scope.categories = [
+    { title: 'Weather', source: 'DOST', id: 1, image : 'http://image.flaticon.com/icons/svg/178/178342.svg'},
+    { title: 'Road Traffic', source: 'MMDA', id: 2, image : 'http://image.flaticon.com/icons/svg/139/139755.svg'},
+    { title: 'Mrt Service Status', source: 'DOTC', id: 3, image: 'http://image.flaticon.com/icons/svg/171/171249.svg' },
+  ];
 });
+

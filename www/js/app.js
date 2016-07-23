@@ -32,42 +32,45 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'AppCtrl'
   })
 
-  .state('app.search', {
-    url: '/search',
+  .state('app.categories', {
+    url: '/categories',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/categories.html',
+        controller: 'CategoriesCtrl'
       }
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
-
-  .state('app.single', {
-    url: '/playlists/:playlistId',
+  .state('app.alerts', {
+    url: '/alerts',
     views: {
       'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+        templateUrl: 'templates/alerts.html',
+        controller: 'AlertsCtrl'
+      }
+    }
+  })
+
+  .state('app.alerts-create', {
+    url: '/alerts/create?category_id',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/create-alert.html',
+        controller: 'CreateAlertCtrl'
+      }
+    }
+  })
+
+  .state('app.single', {
+    url: '/alerts/:alertId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/alert.html',
+        controller: 'AlertCtrl'
       }
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/categories');
 });
