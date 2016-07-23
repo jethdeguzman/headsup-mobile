@@ -1,16 +1,16 @@
 <ion-view view-title="Create Alert">
   <ion-content overflow-scroll="false">
-    <form ng-submit="createAlert()">
+    <form name="createAlertForm" novalidate="" ng-submit="createAlert(createAlertForm)">
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Alert Name</span>
-          <input type="text" placeholder="Input Alert Name">
+          <input type="text" ng-model="alert.name" placeholder="Input Alert Name" ng-required="true">
         </label>
-        <label class="item item-input item-select" ng-if="category_id == 2">
+        <label class="item item-input item-select" ng-if="categoryId == 2">
             <div class="input-label">
               Line Name
             </div>
-            <select>
+            <select ng-model="alert.lineName" ng-required="true">
               <option value="Edsa">Edsa</option>
               <option value="Commonwealth">Commonwealth</option>
               <option value="Quezon Ave.">Quezon Ave.</option>
@@ -23,11 +23,11 @@
               <option value="NLEX">NLEX</option>
             </select>
           </label>
-          <label class="item item-input item-select" ng-if="category_id == 2">
+          <label class="item item-input item-select" ng-if="categoryId == 2">
             <div class="input-label">
               Point Name
             </div>
-            <select>
+            <select ng-model="alert.pointName" ng-required="true">
               <option value="Balintawak">Balintawak</option>
               <option value="North Ave.">North Ave.</option>
               <option value="Trinoma">Trinoma</option>
@@ -38,6 +38,23 @@
               <option value="Ortigas Ave.">Ortigas Ave.</option>
               <option value="Shaw Blvd.">Shaw Blvd.</option>
               <option value="Pioneer Boni">Pioneer Boni</option>
+            </select>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Date</span>
+            <input type="date" ng-model="alert.date" placeholder="Date" ng-required="">
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Time</span>
+            <input type="time" ng-model="alert.time" placeholder="Time" ng-required="true">
+          </label>
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Repeat
+            </div>
+            <select ng-model="alert.repeat" ng-required="true">
+              <option value="1">One Time Event</option>
+              <option value="2">Daily</option>
             </select>
           </label>
           <label class="item">

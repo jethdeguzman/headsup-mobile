@@ -1,7 +1,7 @@
 <ion-view view-title="Categories">
   <ion-content overflow-scroll="false">
     <ion-list>
-      <ion-item ng-repeat="category in categories" href="#/app/alerts/create?category_id={{category.id}}" class="item-icon-right item-avatar">
+      <ion-item ng-repeat="category in categories" href="#/app/alerts/create?categoryId={{category.id}}" class="item-icon-right item-avatar">
         <img src="{{category.image}}">
         <h2>{{category.title}}</h2>
         <p>{{category.source}}</p>

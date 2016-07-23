@@ -48,8 +48,50 @@ angular.module('starter.controllers', [])
 .controller('AlertCtrl', function($scope, $stateParams) {
 })
 
-.controller('CreateAlertCtrl', function($scope, $stateParams) {
-  $scope.category_id = $stateParams.category_id;
+.controller('CreateAlertCtrl', function($scope, $stateParams, $cordovaDatePicker, $cordovaToast, $http) {
+  $scope.alert = {};
+  $scope.categoryId = $stateParams.categoryId;
+  $scope.createAlert = function(form){
+    if(!form.$valid) {
+      $cordovaToast.showShortBottom('All Fields are required');
+      return false;
+    }
+    data = {
+      'user_id' : 1,
+      'category_id' : $stateParams.categoryId,
+      'name' : $scope.alert.name,
+      'location' : $scope.alert.lineName +'-'+ $scope.alert.pointName,
+      'scheduled_date' : combineDateAndTime($scope.alert.date, $scope.alert.time),
+      'repetition_id' : $scope.alert.repeat
+    }
+
+    createAlert = $http.post('http://192.168.165.102:8000/api/v1/alert', data);
+    createAlert.success(function (result){
+      if (result.success) {
+        $cordovaToast.showShortBottom('Successfully saved');
+        location.href= "#/app/alerts";
+      }else{
+        $cordovaToast.showShortBottom('Connection Error');
+      }
+    });
+
+    createAlert.error(function (err){
+      $cordovaToast.showShortBottom('Connection Error');
+    });
+    
+  }
+
+  combineDateAndTime = function(date, time) {
+       timeString = time.getHours() + ':' + time.getMinutes() + ':00';
+
+       var year = date.getFullYear();
+       var month = date.getMonth() + 1; // Jan is 0, dec is 11
+       var day = date.getDate();
+       var dateString = '' + year + '-' + month + '-' + day;
+       var combined = new Date(dateString + ' ' + timeString);
+
+       return combined;
+    }
 })
 
 .controller('CategoriesCtrl', function($scope) {
