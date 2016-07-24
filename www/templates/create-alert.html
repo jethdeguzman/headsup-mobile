@@ -6,60 +6,77 @@
           <span class="input-label">Alert Name</span>
           <input type="text" ng-model="alert.name" placeholder="Input Alert Name" ng-required="true">
         </label>
+        <label class="item item-input item-select" ng-if="categoryId == 1">
+          <div class="input-label">
+            Location
+          </div>
+          <select ng-model="alert.lineName" ng-required="true">
+            <option ng-selected="selected" value="Caloocan, Metro Manila">Caloocan, Metro Manila</option>
+            <option value="Makati, Metro Manila">Makati, Metro Manila</option>
+            <option value="Marikina, Metro Manila">Marikina, Metro Manila</option>
+            <option value="Pasay, Metro Manila">Pasay, Metro Manila</option>
+            <option value="Pasig, Metro Manila">Pasig, Metro Manila</option>
+            <option value="Quezon City, Metro Manila">Quezon City, Metro Manila</option>
+            <option value="Taguig, Metro Manila">Taguig, Metro Manila</option>
+            <option value="Las Pinas, Metro Manila">Las Pinas, Metro Manila</option>
+            <option value="San Juan, Metro Manila">San Juan, Metro Manila</option>
+            <option value="Navotas, Metro Manila">Navotas, Metro Manila</option>
+          </select>
+        </label>
         <label class="item item-input item-select" ng-if="categoryId == 2">
-            <div class="input-label">
-              Line Name
-            </div>
-            <select ng-model="alert.lineName" ng-required="true">
-              <option value="Edsa">Edsa</option>
-              <option value="Commonwealth">Commonwealth</option>
-              <option value="Quezon Ave.">Quezon Ave.</option>
-              <option value="Espana">Espana</option>
-              <option value="C5">C5</option>
-              <option value="Ortigas">Ortigas</option>
-              <option value="Marcos Highway">Marcos Highway</option>
-              <option value="Roxas Blvd.">Roxas Blvd.</option>
-              <option value="SLEX">SLEX</option>
-              <option value="NLEX">NLEX</option>
-            </select>
-          </label>
-          <label class="item item-input item-select" ng-if="categoryId == 2">
-            <div class="input-label">
-              Point Name
-            </div>
-            <select ng-model="alert.pointName" ng-required="true">
-              <option value="Balintawak">Balintawak</option>
-              <option value="North Ave.">North Ave.</option>
-              <option value="Trinoma">Trinoma</option>
-              <option value="Quezon Ave.">Quezon Ave.</option>
-              <option value="Kamuning">Kamuning</option>
-              <option value="P. Tuazon">P. Tuazon</option>
-              <option value="Main Ave.">Main Ave.</option>
-              <option value="Ortigas Ave.">Ortigas Ave.</option>
-              <option value="Shaw Blvd.">Shaw Blvd.</option>
-              <option value="Pioneer Boni">Pioneer Boni</option>
-            </select>
-          </label>
-          <label class="item item-input">
-            <span class="input-label">Date</span>
-            <input type="date" ng-model="alert.date" placeholder="Date" ng-required="">
-          </label>
-          <label class="item item-input">
-            <span class="input-label">Time</span>
-            <input type="time" ng-model="alert.time" placeholder="Time" ng-required="true">
-          </label>
-          <label class="item item-input item-select">
-            <div class="input-label">
-              Repeat
-            </div>
-            <select ng-model="alert.repeat" ng-required="true">
-              <option value="1">One Time Event</option>
-              <option value="2">Daily</option>
-            </select>
-          </label>
-          <label class="item">
-            <button class="button button-block button-positive" type="submit">Save</button>
-          </label>
+          <div class="input-label">
+            Line Name
+          </div>
+          <select ng-model="alert.lineName" ng-required="true" ng-change="updateLineName(alert.lineName)">
+            <option ng-selected="selected" value="Edsa">Edsa</option>
+            <option value="Commonwealth">Commonwealth</option>
+            <option value="Quezon Ave.">Quezon Ave.</option>
+            <option value="Espana">Espana</option>
+            <option value="C5">C5</option>
+            <option value="Ortigas">Ortigas</option>
+            <option value="Marcos Highway">Marcos Highway</option>
+            <option value="Roxas Blvd.">Roxas Blvd.</option>
+            <option value="SLEX">SLEX</option>
+            <option value="NLEX">NLEX</option>
+          </select>
+        </label>
+        <label class="item item-input item-select" ng-if="categoryId == 2 && alert.lineName == 'Edsa'">
+          <div class="input-label">
+            Point Name 
+          </div>
+          <select ng-model="alert.pointName" ng-required="true">
+            <option ng-selected="selected" value="Balintawak">Balintawak</option>
+            <option value="North Ave.">North Ave.</option>
+            <option value="Trinoma">Trinoma</option>
+            <option value="Quezon Ave.">Quezon Ave.</option>
+            <option value="Kamuning">Kamuning</option>
+            <option value="P. Tuazon">P. Tuazon</option>
+            <option value="Main Ave.">Main Ave.</option>
+            <option value="Ortigas Ave.">Ortigas Ave.</option>
+            <option value="Shaw Blvd.">Shaw Blvd.</option>
+            <option value="Pioneer Boni">Pioneer Boni</option>
+          </select>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Date</span>
+          <input type="date" ng-model="alert.date" placeholder="Date">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Time</span>
+          <input type="time" ng-model="alert.time" placeholder="Time">
+        </label>
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Repeat
+          </div>
+          <select ng-model="alert.repeat" ng-required="true">
+            <option ng-selected="selected" value="1">One Time Event</option>
+            <option value="2">Daily</option>
+          </select>
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Save</button>
+        </label>
       </div>
     </form>
   </ion-content>

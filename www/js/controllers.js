@@ -50,22 +50,33 @@ angular.module('starter.controllers', [])
 
 .controller('CreateAlertCtrl', function($scope, $stateParams, $cordovaDatePicker, $cordovaToast, $http) {
   $scope.alert = {};
+  $scope.alert.lineName = 'Edsa';
+  $scope.alert.pointName = 'Balintawak';
   $scope.categoryId = $stateParams.categoryId;
+  var location = '';
   $scope.createAlert = function(form){
     if(!form.$valid) {
       $cordovaToast.showShortBottom('All Fields are required');
       return false;
     }
-    data = {
-      'user_id' : 1,
-      'category_id' : $stateParams.categoryId,
-      'name' : $scope.alert.name,
-      'location' : $scope.alert.lineName +'-'+ $scope.alert.pointName,
-      'scheduled_date' : combineDateAndTime($scope.alert.date, $scope.alert.time),
-      'repetition_id' : $scope.alert.repeat
+    if($stateParams.categoryId == 1){
+      location = $scope.alert.location;
     }
 
-    createAlert = $http.post('http://192.168.165.102:8000/api/v1/alert', data);
+    if($stateParams.categoryId == 2){
+      location = $scope.alert.lineName +'-'+ $scope.alert.pointName;
+    }
+
+    data = {
+        'user_id' : 1,
+        'category_id' : $stateParams.categoryId,
+        'name' : $scope.alert.name,
+        'location' : location,
+        'set_date' : combineDateAndTime($scope.alert.date, $scope.alert.time),
+        'repetition_id' : $scope.alert.repeat
+    }
+    
+    createAlert = $http.post('http://headsup-app.cloudapp.net/api/v1/alerts', data);
     createAlert.success(function (result){
       if (result.success) {
         $cordovaToast.showShortBottom('Successfully saved');
@@ -79,6 +90,10 @@ angular.module('starter.controllers', [])
       $cordovaToast.showShortBottom('Connection Error');
     });
     
+  }
+
+  $scope.updateLineName = function(lineName){
+    $scope.alert.lineName = lineName;
   }
 
   combineDateAndTime = function(date, time) {
