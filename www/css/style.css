@@ -1,1 +1,24 @@
 /* Empty. Add your own CSS if you like */
+
+.background-sidemenu
+{
+	background-color:#53acd2;
+}
+.background-form
+{
+	background-color:lightblue;
+}
+.loader
+{
+	/* background : url("../img/icon-loading3.gif") center; */
+	background: #e9e9e9;
+}
+.logoSplashscreen
+{
+	background : url("../img/splashscreen.png") center;
+}
+.loading-backdrop{
+    margin-top: 44px; /*loading should stay under the header*/
+	background : url("../img/icon-loading3.gif") center;
+    background-color: rgb(237, 240, 241);
+}
