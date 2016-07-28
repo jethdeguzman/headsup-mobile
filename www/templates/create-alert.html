@@ -1,23 +1,16 @@
-<!-- <style>
-.background-form
-{
-	background-color:lightblue;
-}
-</style> -->
-
 <ion-view view-title="Create Alert">
-  <ion-content overflow-scroll="false" class="background-form">
+  <ion-content overflow-scroll="false" has-bouncing="true">
     <form name="createAlertForm" novalidate="" ng-submit="createAlert(createAlertForm)">
       <div class="list">
         <label class="item item-input">
-          <span class="input-label">Alert Name</span>
-          <input type="text" ng-model="alert.name" placeholder="Input Alert Name" ng-required="true">
+          <span class="input-label">Name</span>
+          <input type="text" ng-model="alert.name" placeholder="Input Alert Name" ng-required="true" class="text-right" style="margin-right:35px;">
         </label>
         <label class="item item-input item-select" ng-if="categoryId == 1">
           <div class="input-label">
             Location
           </div>
-          <select ng-model="alert.lineName" ng-required="true">
+          <select ng-model="alert.location" ng-required="true">
             <option ng-selected="selected" value="Caloocan, Metro Manila">Caloocan, Metro Manila</option>
             <option value="Makati, Metro Manila">Makati, Metro Manila</option>
             <option value="Marikina, Metro Manila">Marikina, Metro Manila</option>
@@ -38,13 +31,7 @@
             <option ng-selected="selected" value="Edsa">Edsa</option>
             <option value="Commonwealth">Commonwealth</option>
             <option value="Quezon Ave.">Quezon Ave.</option>
-            <option value="Espana">Espana</option>
             <option value="C5">C5</option>
-            <option value="Ortigas">Ortigas</option>
-            <option value="Marcos Highway">Marcos Highway</option>
-            <option value="Roxas Blvd.">Roxas Blvd.</option>
-            <option value="SLEX">SLEX</option>
-            <option value="NLEX">NLEX</option>
           </select>
         </label>
         <label class="item item-input item-select" ng-if="categoryId == 2 && alert.lineName == 'Edsa'">
@@ -62,15 +49,75 @@
             <option value="Ortigas Ave.">Ortigas Ave.</option>
             <option value="Shaw Blvd.">Shaw Blvd.</option>
             <option value="Pioneer Boni">Pioneer Boni</option>
+            <option value="Guadalupe">Guadalupe</option>
+            <option value="Buendia">Buendia</option>
+            <option value="Ayala Ave">Ayala Ave</option>
+            <option value="Magallanes">Magallanes</option>
+            <option value="Tramo">Tramo</option>
+            <option value="Taft Ave.">Taft Ave.</option>
+            <option value="Roxas Boulevard">Roxas Boulevard</option>
+            <option value="Macapagal Ave.">Macapagal Ave.</option>
+            <option value="Mall of Asia">Mall of Asia</option>
+          </select>
+        </label>
+        <label class="item item-input item-select" ng-if="categoryId == 2 && alert.lineName == 'Commonwealth'">
+          <div class="input-label">
+            Point Name 
+          </div>
+          <select ng-model="alert.pointName" ng-required="true">
+              <option ng-selected="selected" value="Batasan">Batasan</option>
+              <option value="Ever Gotesco">Ever Gotesco</option>
+              <option value="Zuzuarregi">Zuzuarregi</option>
+              <option value="General Malvar Hospital">General Malvar Hospital</option>
+              <option value="Tandang Sora Eastside">Tandang Sora Eastside</option>
+              <option value="Tandang Sora Westside">Tandang Sora Westside</option>
+              <option value="Central Ave">Central Ave</option>
+              <option value="Magsaysay Ave">Magsaysay Ave</option>
+              <option value="University Ave">University Ave</option>
+              <option value="Philcoa">Philcoa</option>
+            </select>
+        </label>
+        <label class="item item-input item-select" ng-if="categoryId == 2 && alert.lineName == 'Quezon Ave.'">
+          <div class="input-label">
+            Point Name 
+          </div>
+          <select ng-model="alert.pointName" ng-required="true">
+            <option ng-selected="selected" value="Elliptical Road">Elliptical Road</option>
+            <option value="Bantayog Road">Bantayog Road</option>
+            <option value="Edsa">Edsa</option>
+            <option value="Timog">Timog</option>
+            <option value="Roces Avenue">Roces Avenue</option>
+            <option value="Roosevelt Avenue">Roosevelt Avenue</option>
+            <option value="Banawe">Banawe</option>
+            <option value="D. Tuazon">D. Tuazon</option>
+            <option value="Apo Avenue">Apo Avenue</option>
+            <option value="Mayon">Mayon</option>
+          </select>
+        </label>
+        <label class="item item-input item-select" ng-if="categoryId == 2 && alert.lineName == 'C5'">
+          <div class="input-label">
+            Point Name 
+          </div>
+          <select ng-model="alert.pointName" ng-required="true">
+            <option ng-selected="selected" value="Tandang Sora">Tandang Sora</option>
+            <option value="Capitol Hills">Capitol Hills</option>
+            <option value="University of the Philippines">University of the Philippines</option>
+            <option value="C.P. Garcia">C.P. Garcia</option>
+            <option value="Miriam College">Miriam College</option>
+            <option value="Ateneo De Manila University">Ateneo De Manila University</option>
+            <option value="Xavierville">Xavierville</option>
+            <option value="Aurora Boulevard">Aurora Boulevard</option>
+            <option value="P. Tuazon">P. Tuazon</option>
+            <option value="Bonny Serrano">Bonny Serrano</option>
           </select>
         </label>
         <label class="item item-input">
           <span class="input-label">Date</span>
-          <input type="date" ng-model="alert.date" placeholder="Date">
+          <input type="date" ng-model="alert.date" placeholder="Date" class="text-right">
         </label>
         <label class="item item-input">
           <span class="input-label">Time</span>
-          <input type="time" ng-model="alert.time" placeholder="Time">
+          <input type="time" ng-model="alert.time" placeholder="Time" class="text-right">
         </label>
         <label class="item item-input item-select">
           <div class="input-label">
@@ -81,7 +128,7 @@
             <option value="2">Daily</option>
           </select>
         </label>
-        <label class="item">
+        <label class="item" style="border-bottom:0px;">
           <button class="button button-block button-positive" type="submit">Save</button>
         </label>
       </div>

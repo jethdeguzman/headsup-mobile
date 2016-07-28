@@ -1,59 +1,109 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $scope, $state) {
+  var userId = localStorage.getItem('userId');
+  if(userId == null || userId == 0){
+    $state.go('login');
+  }
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
-  $scope.loginData = {};
-
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
+  $scope.logout = function(){
+    localStorage.setItem('userId', 0);
+    $state.go('login');
+  }
 })
 
-.controller('AlertsCtrl', function($scope) {
+.controller('LoginCtrl', function($scope, $cordovaToast, $state, $ionicHistory, $http) {
+  $scope.input = {};
+  $scope.login = function(){
+    data = {'mobile_number' : '63' + $scope.input.mobileNumber};
+    validateUser = $http.post('http://headsup-app.cloudapp.net/api/v1/users/validate', data);
+    validateUser.success(function(result){
+      if (result.user_id == 0){
+        $cordovaToast.showShortBottom('Mobile Number is not yet registered.');
+      }else{
+        localStorage.setItem('userId', result.user_id);
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        $state.go('app.categories');
+      }
+    });
+
+    validateUser.error(function (err){
+      alert(JSON.stringify(err));
+      $cordovaToast.showShortBottom('Connection Error');
+    });
+  }
+})
+
+.controller('AlertsCtrl', function($scope, $http) {
   $scope.alerts = [];
+  $scope.weatherAlerts = [];
+  $scope.trafficAlerts = [];
+  $scope.mrtAlerts = [];
+  var userId = localStorage.getItem('userId');
+  getAllAlerts();
+
+  $scope.doRefresh = function() {
+    getAllAlerts();
+  };
+
+  function getAllAlerts(){
+    getAlerts = $http.get('http://headsup-app.cloudapp.net/api/v1/alerts/'+userId);
+    getAlerts.success(function(result){
+      alerts = result.data;
+      trafficAlerts = [];
+      weatherAlerts = [];
+      mrtAlerts = [];
+      for (i in alerts){
+        set_date = new Date(alerts[i].set_date);
+        alerts[i].set_date = set_date.toLocaleTimeString();
+        
+        if(alerts[i].category_id == '1'){      
+          weatherAlerts.push(alerts[i]);
+        }
+
+        if(alerts[i].category_id == '2'){
+          trafficAlerts.push(alerts[i]);
+        }
+
+        if(alerts[i].category_id == '3'){
+          mrtAlerts.push(alerts[i]);
+        }
+
+        $scope.weatherAlerts = weatherAlerts;
+        $scope.trafficAlerts = trafficAlerts;
+        $scope.mrtAlerts = mrtAlerts;
+
+      }
+    });
+
+    getAlerts.error(function(err){
+      $cordovaToast.showShortBottom('Connection Error');
+    });
+
+    getAlerts.finally(function(){
+      $scope.$broadcast('scroll.refreshComplete');
+    });
+  }
+  
+
 })
 
 .controller('AlertCtrl', function($scope, $stateParams) {
 })
 
-.controller('CreateAlertCtrl', function($scope, $stateParams, $cordovaDatePicker, $cordovaToast, $http) {
+.controller('CreateAlertCtrl', function($scope, $stateParams, $cordovaDatePicker, $cordovaToast, $http, $state, $ionicHistory) {
   $scope.alert = {};
+  $scope.alert.name = 'Sample Alert';
   $scope.alert.lineName = 'Edsa';
   $scope.alert.pointName = 'Balintawak';
+  $scope.alert.repeat = "1";
+  $scope.alert.location = "";
   $scope.categoryId = $stateParams.categoryId;
-  var location = '';
+  var userId = localStorage.getItem('userId');
+  var location = 'Default';
+  
   $scope.createAlert = function(form){
     if(!form.$valid) {
       $cordovaToast.showShortBottom('All Fields are required');
@@ -68,25 +118,30 @@ angular.module('starter.controllers', [])
     }
 
     data = {
-        'user_id' : 1,
+        'user_id' : userId,
         'category_id' : $stateParams.categoryId,
         'name' : $scope.alert.name,
         'location' : location,
         'set_date' : combineDateAndTime($scope.alert.date, $scope.alert.time),
         'repetition_id' : $scope.alert.repeat
     }
-    
+
     createAlert = $http.post('http://headsup-app.cloudapp.net/api/v1/alerts', data);
     createAlert.success(function (result){
       if (result.success) {
         $cordovaToast.showShortBottom('Successfully saved');
-        location.href= "#/app/alerts";
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        $state.go('app.alerts');
       }else{
+        alert(JSON.stringify(result));
         $cordovaToast.showShortBottom('Connection Error');
       }
     });
 
     createAlert.error(function (err){
+      alert(JSON.stringify(err));
       $cordovaToast.showShortBottom('Connection Error');
     });
     
@@ -97,7 +152,7 @@ angular.module('starter.controllers', [])
   }
 
   combineDateAndTime = function(date, time) {
-       timeString = time.getHours() + ':' + time.getMinutes() + ':00';
+       timeString = time.getHours() + ':' + time.getMinutes();
 
        var year = date.getFullYear();
        var month = date.getMonth() + 1; // Jan is 0, dec is 11

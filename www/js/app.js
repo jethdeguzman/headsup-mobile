@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $ionicHistory) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,17 +19,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    $ionicPlatform.registerBackButtonAction(function (event) {
+      if ($ionicHistory.currentStateName() === 'login'){
+        event.preventDefault();
+      } else {
+        $ionicHistory.goBack();
+      }
+    }, 100);
   });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
+  })
+
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
   })
 
   .state('app.categories', {
@@ -49,7 +63,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
         templateUrl: 'templates/alerts.html',
         controller: 'AlertsCtrl'
       }
-    }
+    },
+    reload:true,
   })
 
   .state('app.alerts-create', {

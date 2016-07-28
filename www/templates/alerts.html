@@ -1,21 +1,19 @@
-<!-- <style>
-.background-form
-{
-	background-color:lightblue;
-	 /*style="background:#F5F5F5;"	in-line style*/
-}
-</style> -->
-
 <ion-view title="My Alerts">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header background-form" has-bouncing="true">
+  <ion-content class="has-header" has-bouncing="true" overflow-scroll="false">
+    <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+      </ion-refresher>
     <ion-list>
-      <div class="item item-divider ">Weather (1)</div>
-      <ion-item item="reminder"  href="#/app/reminders/1">
+      <div class="item item-divider ">Weather ({{weatherAlerts.length}})</div>
+      <ion-item item="alert" ng-repeat="alert in weatherAlerts">
         <i class="icon ion-ios7-cart-outline"  style="top:-5px;"></i>
-        <span>test Alert on 7:00pm - daily</span> 
+        <span style="display:block">{{ alert.name }}</span>
+        <small><i class="icon ion-android-pin active"></i> {{alert.location}}</small> /
+        <small><i class="icon ion-android-time"></i> {{alert.set_date}}</small> 
         <ion-option-button class="button-light" ng-click="editReminder(reminder.reminder_id)" style="background:#eee">
           Edit
         </ion-option-button>
@@ -25,11 +23,13 @@
         <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
       </ion-item>
     
-      <div class="item item-divider">Traffic (0)</div>
-      <ion-item item="reminder"  href="#/app/reminders/1">
+      <div class="item item-divider">Traffic ({{trafficAlerts.length}})</div>
+      <ion-item  item="alert" ng-repeat="alert in trafficAlerts">
         <i class="icon ion-ios7-cart-outline"  style="top:-5px;"></i>
-        <span>test Alert on 7:00pm - daily</span> 
-        <ion-option-button class="button-light" ng-click="editReminder(reminder.reminder_id)" style="background:#eee">
+        <span style="display:block">{{ alert.name }}</span>
+        <small><i class="icon ion-android-pin active"></i> {{alert.location}}</small> /
+        <small><i class="icon ion-android-time"></i> {{alert.set_date}}</small> 
+        <ion-option-button class="button-light" ng-click="edsitReminder(reminder.reminder_id)" style="background:#eee">
           Edit
         </ion-option-button>
         <ion-option-button class="button-dark" ng-click="deleteReminder(reminder)">
@@ -38,7 +38,19 @@
         <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
       </ion-item>
   
-      <div class="item item-divider">Mrt Service Status (0)</div>
+      <div class="item item-divider">Mrt Service Status ({{mrtAlerts.length}})</div>
+      <ion-item  item="alert" ng-repeat="alert in mrtAlerts">
+        <i class="icon ion-ios7-cart-outline"  style="top:-5px;"></i>
+        <span style="display:block">{{ alert.name }}</span>
+        <small><i class="icon ion-android-time"></i> {{alert.set_date}}</small> 
+        <ion-option-button class="button-light" ng-click="editReminder(reminder.reminder_id)" style="background:#eee">
+          Edit
+        </ion-option-button>
+        <ion-option-button class="button-dark" ng-click="deleteReminder(reminder)">
+          Delete
+        </ion-option-button>
+        <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>
